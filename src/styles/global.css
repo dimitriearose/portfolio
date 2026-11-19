@@ -1,0 +1,25 @@
+:root {
+    --paper: #E6E9E1;
+    --ink: #1E2528;
+    --ink-soft: #4E585C;
+    --rule: #B9C0BA;
+    --leader: #8A9296;
+    --link: #2B45A8;
+    --link-hover: #1A2E7A;
+}
+
+body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Georgia, serif;
+    line-height: 1.6;
+}
+
+a { color: var(--link); }
+a:hover { color: var(--link-hover); }
+
+:focus-visible {
+    outline: 2px solid var(--link);
+    outline-offset: 3px;
+}
