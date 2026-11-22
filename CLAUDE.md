@@ -13,7 +13,8 @@ after each change, briefly explain what changed and why.
 - The homepage is a book's table of contents: years are chapters (`Chapter.astro`), each work is one line (`Entry.astro`: glyph, title, dotted leader, month), italic notes sit in a reserved right-hand margin column.
 - Reference: `Portfolio — homepage directions-selection.pdf` (the "B: Margins" direction only; "Cutting Room" and "Datasheet" were rejected).
 - **Ask before changing the design.**
-- Plain CSS only, using the tokens in `src/styles/global.css` (`--paper`, `--ink`, `--ink-soft`, `--rule`, `--leader`, `--link`, `--link-hover`; `--text-note` … `--text-name`). No Tailwind, no UI frameworks, no client-side JS unless truly needed.
+- Plain CSS only, using the tokens in `src/styles/global.css` (`--paper`, `--ink`, `--ink-soft`, `--rule`, `--leader`, `--link`, `--link-hover`, `--rubric`, `--ink-writing`, `--ink-film`, `--ink-build`; `--text-note` … `--text-name`).
+- Colour is used sparingly: `--rubric` (red ink) only for chapter years, footnote/sidenote numbers, article drop caps and the 404 number; each kind's ink only on its icon and the active filter underline; links stay `--link` blue. All colours pass 4.5:1 on `--paper`. The paper has a faint inline-SVG grain (`body` background-image). No Tailwind, no UI frameworks, no client-side JS unless truly needed.
 - Component styles in the component's scoped `<style>`. Markdown output is unscoped, so article body styles live under `.prose` in `global.css`.
 - Font: Literata via Astro's Fonts API (`astro.config.ts`, `--font-literata`).
 - Code blocks are plain (`markdown.syntaxHighlight: false`).
@@ -23,6 +24,7 @@ after each change, briefly explain what changed and why.
   - Cross-document view transitions: an entry's title glides into the article `<h1>`. Both carry `view-transition-name: titleTransitionName(href)` (`src/lib/url.ts`), so names must stay unique per page. Only enabled under `prefers-reduced-motion: no-preference`.
   - The icon key (`KindKey.astro`) is a radio-button filter styled with `:has()`; rows carry `data-kind`.
   - The dot leader reveals a `--link` copy via `clip-path` on hover/focus.
+  - Living icons (`Glyph.astro`): on hover/focus of the enclosing link or key label, writing lines draw, the film strip advances, the chip's pins flicker. Under `prefers-reduced-motion: no-preference` only.
   - The only client-side JS is the footer's "Open one at random" script (`SiteFooter.astro`); the link is `hidden` until it runs.
 
 ## Content

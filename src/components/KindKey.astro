@@ -68,10 +68,10 @@ const kinds: { kind: Kind; label: string }[] = [
         margin-left: auto;
         font-style: italic;
         text-decoration: none !important;
-        visibility: hidden;
+        display: none;
     }
     .key:has(input:checked:not([value="all"])) .all {
-        visibility: visible;
+        display: flex;
     }
     .visually-hidden {
         position: absolute;
