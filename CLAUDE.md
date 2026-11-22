@@ -7,7 +7,7 @@ after each change, briefly explain what changed and why.
 ## Stack
 - Astro 7 + TypeScript (strict, `astro/tsconfigs/strict`). Node ≥ 22.23 (dev on Node 26, CI on 24).
 - Fully static output. Deployed to GitHub Pages at `/portfolio/` via `.github/workflows/deploy.yml` (see DEPLOY.md).
-- Dependencies: `astro`, `@astrojs/rss`, `@astrojs/sitemap`; dev: `@astrojs/check`, `typescript`. **Ask before adding any other dependency.**
+- Dependencies: `astro`, `@astrojs/rss`, `@astrojs/sitemap`, `@astrojs/markdown-satteri` (to configure Astro's default Markdown processor); dev: `@astrojs/check`, `typescript`. **Ask before adding any other dependency.**
 
 ## Design: "Margins"
 - The homepage is a book's table of contents: years are chapters (`Chapter.astro`), each work is one line (`Entry.astro`: glyph, title, dotted leader, month), italic notes sit in a reserved right-hand margin column.
@@ -17,6 +17,7 @@ after each change, briefly explain what changed and why.
 - Component styles in the component's scoped `<style>`. Markdown output is unscoped, so article body styles live under `.prose` in `global.css`.
 - Font: Literata via Astro's Fonts API (`astro.config.ts`, `--font-literata`).
 - Code blocks are plain (`markdown.syntaxHighlight: false`).
+- Markdown footnotes become right-margin sidenotes via a Sätteri hast plugin (`src/lib/sidenotes.ts`, registered with `markdown.processor: satteri(...)`). Astro 7 uses Sätteri, not remark/rehype: write plugins against its visitor API.
 - Motion and interaction, all small and on-concept:
   - Chapter years are `position: sticky` running heads (off below 760px).
   - Cross-document view transitions: an entry's title glides into the article `<h1>`. Both carry `view-transition-name: titleTransitionName(href)` (`src/lib/url.ts`), so names must stay unique per page. Only enabled under `prefers-reduced-motion: no-preference`.

@@ -120,6 +120,21 @@ photo for someone who can't see it.
   (Images inside raw HTML are **not** optimized. Prefer `![]()` with a
   short paragraph under it when you can.)
 
+## Footnotes become sidenotes
+
+Write ordinary Markdown footnotes:
+
+```md
+Godot keeps a scene tree[^tree] and walks it every frame.
+
+[^tree]: A tree of nodes, each with its own script.
+```
+
+On wide screens each note sits in the right-hand margin beside its line,
+like the margin notes on the contents page. On phones they appear as a
+numbered list at the end. Keep them short, a sentence or two, so they fit
+the margin.
+
 ## Linking between entries
 
 Use relative links, so they keep working whether the site is at
