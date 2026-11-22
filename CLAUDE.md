@@ -30,6 +30,7 @@ after each change, briefly explain what changed and why.
 ## Content
 - Three collections in `src/content.config.ts` (glob loader, `z` from `astro/zod`): `writing`, `films`, `builds`. Shared fields: `title`, `date` (coerced), `status?`, `note?`, `description?`, `draft` (default false). Films: `videoUrl?`, `poster?` (image()). Builds: `cover?` (image()) + `coverAlt` (required with cover).
 - Builds may be folders: `builds/<slug>/index.md` → id `<slug>`.
+- `src/content` is also an Obsidian vault. Templates live in `src/content/_templates/` (ignored by the site). Optional fields use `blankable()` in `content.config.ts` because Obsidian saves empty properties as `null`. File names may be natural ("My essay.md"); the glob loader slugifies them into ids.
 - Drafts are excluded everywhere (pages, RSS, sitemap) via `getPublished()` in `src/lib/content.ts`. Always fetch through it.
 - Bracketed titles/text like `[First short film]` are placeholders. Keep them; never invent facts about Dimitri.
 

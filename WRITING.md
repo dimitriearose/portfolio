@@ -10,8 +10,37 @@ list by hand.
 | Film    | `src/content/films/`    | `/films/<file-name>/`     |
 | Build   | `src/content/builds/`   | `/builds/<file-name>/`    |
 
-The file name becomes the URL, so use lowercase words joined by hyphens:
-`reading-godots-source.md` → `/writing/reading-godots-source/`.
+The file name becomes the URL: lowercased, spaces turned into hyphens,
+punctuation dropped. So you can name files naturally:
+`Reading Godot's source.md` → `/writing/reading-godots-source/`.
+Renaming a published file changes its address, so old links to it stop
+working.
+
+## Writing in Obsidian
+
+Open `src/content` as an Obsidian vault (it's the `content` vault). Keep
+personal notes in a separate vault, never here: everything in this folder
+can end up in the public GitHub repository.
+
+**One-time setup** (Settings):
+- **Templates → Template folder location:** `_templates`
+- **Templates → Date format:** `YYYY-MM-DD`
+- **Files and links → Default location for new notes:** *Same folder as current file*
+- **Files and links → Use [[Wikilinks]]:** off
+- **Files and links → Default location for new attachments:** *Same folder as current file*
+
+**A new post:**
+1. Click the folder it belongs in (`writing`, `films` or `builds`), then
+   **New note** (⌘N).
+2. Type the title as the file name, e.g. `Notes on deep work`.
+3. ⌘P → **Templates: Insert template** → **Essay**, **Film** or **Build**.
+   This fills in the title and today's date, and sets `draft: true`.
+4. Fill in `note` or `description` if you like (blank is fine), and write.
+5. To publish: set `draft` to false (untick it), commit and push.
+
+`_templates` is ignored by the site. Never leave an empty note (like a stray
+**Untitled**) in `writing`, `films` or `builds`: every entry needs a title
+and a date, and the build fails without them.
 
 ## Fields every kind shares
 
