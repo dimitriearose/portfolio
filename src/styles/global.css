@@ -10,6 +10,10 @@
     /* Rubrication: the red ink old books used for chapter openings and
        note markers. Used sparingly: years, note numbers, drop caps. */
     --rubric: #B03E24;
+    /* One ink per kind of work, used only on its icon. */
+    --ink-writing: #7A5530; /* sepia, like iron-gall ink */
+    --ink-film: #7B3B68;    /* plum */
+    --ink-build: #2E6A4E;   /* circuit-board green */
 
     /* type sizes */
     --text-note: 0.9375rem;

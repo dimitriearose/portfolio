@@ -18,6 +18,7 @@ const labels: Record<Kind, string> = {
 
 <svg
         class="glyph"
+        data-kind={kind}
         width="20"
         height="20"
         viewBox="0 0 20 20"
@@ -48,4 +49,7 @@ const labels: Record<Kind, string> = {
         flex: none;
         align-self: center;
     }
+    .glyph[data-kind="writing"] { color: var(--ink-writing); }
+    .glyph[data-kind="film"] { color: var(--ink-film); }
+    .glyph[data-kind="build"] { color: var(--ink-build); }
 </style>

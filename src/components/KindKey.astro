@@ -54,6 +54,10 @@ const kinds: { kind: Kind; label: string }[] = [
         color: var(--ink);
         text-decoration: underline 1px;
     }
+    label:has(input[value="writing"]:checked) { text-decoration-color: var(--ink-writing); }
+    label:has(input[value="film"]:checked) { text-decoration-color: var(--ink-film); }
+    label:has(input[value="build"]:checked) { text-decoration-color: var(--ink-build); }
+    label:has(input:checked) { text-decoration-thickness: 2px; }
     label:has(input:focus-visible) {
         outline: 2px solid var(--link);
         outline-offset: 4px;
