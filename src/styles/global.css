@@ -1,4 +1,5 @@
 :root {
+    /* colors */
     --paper: #E6E9E1;
     --ink: #1E2528;
     --ink-soft: #4E585C;
@@ -6,13 +7,22 @@
     --leader: #8A9296;
     --link: #2B45A8;
     --link-hover: #1A2E7A;
+
+    /* type sizes */
+    --text-note: 0.9375rem;
+    --text-base: 1.125rem;
+    --text-lead: 1.375rem;
+    --text-entry: 1.5625rem;
+    --text-year: clamp(2.75rem, 1.5rem + 4vw, 4rem);
+    --text-name: clamp(3.5rem, 2rem + 6vw, 6rem);
 }
 
 body {
     margin: 0;
     background: var(--paper);
     color: var(--ink);
-    font-family: Georgia, serif;
+    font-family: var(--font-literata), Georgia, serif;
+    font-size: var(--text-base);
     line-height: 1.6;
 }
 

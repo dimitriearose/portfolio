@@ -14,3 +14,4 @@ dist/
 .astro/
 .env
 .idea
+.obsidian

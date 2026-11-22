@@ -1,0 +1,69 @@
+---
+import Glyph from "./Glyph.astro";
+import type { Kind } from "../types";
+
+interface Props {
+    kind: Kind;
+    title: string;
+    month: string;
+    href: string;
+    note?: string;
+}
+
+const { kind, title, month, href, note } = Astro.props;
+---
+
+<li class="entry">
+    <a href={href}>
+        <Glyph kind={kind} />
+        <span class="title">{title}</span>
+        <span class="leader" aria-hidden="true"></span>
+        <span class="month">{month}</span>
+    </a>
+    {note && <p class="note">{note}</p>}
+</li>
+
+<style>
+    .entry {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 4px 40px;
+        border-bottom: 1px solid var(--rule);
+    }
+    a {
+        flex: 999 1 420px;
+        min-width: 0;
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+        padding: 16px 0;
+        color: var(--ink);
+        text-decoration: none;
+    }
+    a:hover .title {
+        color: var(--link);
+    }
+    .title {
+        font-size: var(--text-entry);
+        line-height: 1.3;
+    }
+    .leader {
+        flex: 1 1 40px;
+        border-bottom: 2px dotted var(--leader);
+        transform: translateY(-6px);
+    }
+    .month {
+        color: var(--ink-soft);
+        font-variant-numeric: oldstyle-nums;
+    }
+    .note {
+        flex: 1 1 220px;
+        margin: 0;
+        padding-bottom: 12px;
+        font-size: var(--text-note);
+        font-style: italic;
+        line-height: 1.5;
+        color: var(--ink-soft);
+    }
+</style>
