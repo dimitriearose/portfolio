@@ -1,6 +1,17 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+
+// ─── Your contact details: edit these ──────────────────────────────────
+// Replace each placeholder with the real address or handle. To hide one,
+// delete its line; to add another, copy a line and change it.
+const email = "you@example.com";
+const profiles = [
+    { label: "GitHub", href: "https://github.com/your-username", handle: "your-username" },
+    { label: "YouTube", href: "https://www.youtube.com/@your-channel", handle: "@your-channel" },
+    { label: "LinkedIn", href: "https://www.youtube.com/@your-channel", handle: "@your-channel" },
+];
+// ───────────────────────────────────────────────────────────────────────
 ---
 
 <BaseLayout title="About · Dimitri" description="About Dimitri.">
@@ -8,10 +19,15 @@ import SiteHeader from "../components/SiteHeader.astro";
     <main id="content">
         <h1>About</h1>
         <div class="prose">
-            <p>[A short introduction: who you are and what you make.]</p>
-            <p>[Why this site exists, and what you hope to put on it.]</p>
+            <p>I'm Dimitri Rose. I am here to grow and share my work along the way</p>
+            <p>This site is my space away from the chaos on the internet. I am here to show my work the way I truly want to.</p>
             <h2>Contact</h2>
-            <p>[How to reach you: an email address and any profiles you want listed.]</p>
+            <ul class="contact">
+                <li>Email <a href={`mailto:${email}`}>{email}</a></li>
+                {profiles.map(({ label, href, handle }) => (
+                    <li>{label} <a href={href} rel="me">{handle}</a></li>
+                ))}
+            </ul>
         </div>
     </main>
 </BaseLayout>
