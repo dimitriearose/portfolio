@@ -17,6 +17,12 @@ after each change, briefly explain what changed and why.
 - Component styles in the component's scoped `<style>`. Markdown output is unscoped, so article body styles live under `.prose` in `global.css`.
 - Font: Literata via Astro's Fonts API (`astro.config.ts`, `--font-literata`).
 - Code blocks are plain (`markdown.syntaxHighlight: false`).
+- Motion and interaction, all small and on-concept:
+  - Chapter years are `position: sticky` running heads (off below 760px).
+  - Cross-document view transitions: an entry's title glides into the article `<h1>`. Both carry `view-transition-name: titleTransitionName(href)` (`src/lib/url.ts`), so names must stay unique per page. Only enabled under `prefers-reduced-motion: no-preference`.
+  - The icon key (`KindKey.astro`) is a radio-button filter styled with `:has()`; rows carry `data-kind`.
+  - The dot leader reveals a `--link` copy via `clip-path` on hover/focus.
+  - The only client-side JS is the footer's "Open one at random" script (`SiteFooter.astro`); the link is `hidden` until it runs.
 
 ## Content
 - Three collections in `src/content.config.ts` (glob loader, `z` from `astro/zod`): `writing`, `films`, `builds`. Shared fields: `title`, `date` (coerced), `status?`, `note?`, `description?`, `draft` (default false). Films: `videoUrl?`, `poster?` (image()). Builds: `cover?` (image()) + `coverAlt` (required with cover).
