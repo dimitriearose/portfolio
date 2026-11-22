@@ -1,6 +1,7 @@
 ---
 import Glyph from "./Glyph.astro";
 import type { Kind } from "../types";
+import { titleTransitionName } from "../lib/url";
 
 interface Props {
     kind: Kind;
@@ -16,7 +17,7 @@ const { kind, title, month, href, note } = Astro.props;
 <li class="entry">
     <a href={href}>
         <Glyph kind={kind} />
-        <span class="title">{title}</span>
+        <span class="title" style={`view-transition-name: ${titleTransitionName(href)}`}>{title}</span>
         <span class="leader" aria-hidden="true"></span>
         <span class="month">{month}</span>
     </a>

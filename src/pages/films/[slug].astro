@@ -3,7 +3,7 @@ import type { GetStaticPaths } from "astro";
 import { getImage } from "astro:assets";
 import { render } from "astro:content";
 import ArticleLayout from "../../layouts/ArticleLayout.astro";
-import { getPublished } from "../../lib/content";
+import { entryPath, getPublished } from "../../lib/content";
 
 export const getStaticPaths = (async () => {
     const entries = await getPublished("films");
@@ -20,7 +20,7 @@ const posterSrc = poster ? (await getImage({ src: poster, width: 1280 })).src : 
 const host = videoUrl ? new URL(videoUrl).hostname.replace(/^www\./, "") : "";
 ---
 
-<ArticleLayout kind="film" {...entry.data}>
+<ArticleLayout kind="film" href={entryPath(entry)} {...entry.data}>
     {videoUrl && (
         <div slot="media" class="media">
             {isVideoFile ? (

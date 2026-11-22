@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import { render } from "astro:content";
 import ArticleLayout from "../../layouts/ArticleLayout.astro";
-import { getPublished } from "../../lib/content";
+import { entryPath, getPublished } from "../../lib/content";
 
 export const getStaticPaths = (async () => {
     const entries = await getPublished("writing");
@@ -13,6 +13,6 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 
-<ArticleLayout kind="writing" {...entry.data}>
+<ArticleLayout kind="writing" href={entryPath(entry)} {...entry.data}>
     <Content />
 </ArticleLayout>

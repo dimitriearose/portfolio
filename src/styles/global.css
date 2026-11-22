@@ -150,3 +150,20 @@ summary:focus-visible {
         scroll-behavior: auto !important;
     }
 }
+
+/* Page-to-page animation (cross-document view transitions). Browsers without
+   support simply change page. Only enabled for people who haven't asked
+   their system to reduce motion. */
+@media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+        navigation: auto;
+    }
+    ::view-transition-group(*) {
+        animation-duration: 380ms;
+        animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation-duration: 220ms;
+    }
+}

@@ -3,7 +3,7 @@ import type { GetStaticPaths } from "astro";
 import { Image } from "astro:assets";
 import { render } from "astro:content";
 import ArticleLayout from "../../layouts/ArticleLayout.astro";
-import { getPublished } from "../../lib/content";
+import { entryPath, getPublished } from "../../lib/content";
 
 export const getStaticPaths = (async () => {
     const entries = await getPublished("builds");
@@ -15,7 +15,7 @@ const { Content } = await render(entry);
 const { cover, coverAlt } = entry.data;
 ---
 
-<ArticleLayout kind="build" {...entry.data}>
+<ArticleLayout kind="build" href={entryPath(entry)} {...entry.data}>
     {cover && (
         <figure slot="media" class="cover">
             <Image src={cover} alt={coverAlt ?? ""} widths={[640, 960, 1280]} sizes="(max-width: 1000px) 100vw, 960px" />
