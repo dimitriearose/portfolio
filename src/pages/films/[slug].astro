@@ -1,0 +1,49 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getImage } from "astro:assets";
+import { render } from "astro:content";
+import ArticleLayout from "../../layouts/ArticleLayout.astro";
+import { getPublished } from "../../lib/content";
+
+export const getStaticPaths = (async () => {
+    const entries = await getPublished("films");
+    return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { videoUrl, poster } = entry.data;
+
+// A direct video file plays inline; anything else (YouTube, Vimeo…) is a link.
+const isVideoFile = videoUrl !== undefined && /\.(mp4|webm|mov|m4v)(\?|$)/i.test(videoUrl);
+const posterSrc = poster ? (await getImage({ src: poster, width: 1280 })).src : undefined;
+const host = videoUrl ? new URL(videoUrl).hostname.replace(/^www\./, "") : "";
+---
+
+<ArticleLayout kind="film" {...entry.data}>
+    {videoUrl && (
+        <div slot="media" class="media">
+            {isVideoFile ? (
+                <video controls preload="metadata" poster={posterSrc} src={videoUrl}>
+                    <a href={videoUrl}>Download the film</a>
+                </video>
+            ) : (
+                <p><a href={videoUrl}>Watch “{entry.data.title}” on {host}</a></p>
+            )}
+        </div>
+    )}
+    <Content />
+</ArticleLayout>
+
+<style>
+    .media {
+        margin-bottom: 40px;
+    }
+    video {
+        display: block;
+        width: 100%;
+        max-width: 960px;
+        height: auto;
+        background: var(--ink);
+    }
+</style>

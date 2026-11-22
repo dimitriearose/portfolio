@@ -40,3 +40,72 @@ a:hover { color: var(--link-hover); }
     margin: 0 auto;
     padding: 56px 40px 64px;
 }
+
+/* Long-form text on article pages. Markdown output isn't scoped to a
+   component, so these styles live here. */
+.prose {
+    max-width: 65ch;
+    line-height: 1.7;
+}
+.prose > :first-child { margin-top: 0; }
+.prose h2,
+.prose h3,
+.prose h4 {
+    font-weight: 400;
+    line-height: 1.25;
+    margin: 2em 0 0.5em;
+}
+.prose h2 { font-size: var(--text-entry); }
+.prose h3 { font-size: var(--text-lead); }
+.prose h4 { font-size: var(--text-base); font-style: italic; }
+.prose p,
+.prose ul,
+.prose ol { margin: 0 0 1.1em; }
+.prose ul,
+.prose ol { padding-left: 1.4em; }
+.prose li + li { margin-top: 0.3em; }
+.prose li::marker { color: var(--ink-soft); }
+.prose blockquote {
+    margin: 1.6em 0;
+    padding-left: 1.2em;
+    border-left: 2px solid var(--rule);
+    font-style: italic;
+    color: var(--ink-soft);
+}
+.prose code {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.88em;
+}
+.prose :not(pre) > code {
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--rule) 40%, transparent);
+}
+.prose pre {
+    overflow-x: auto;
+    margin: 1.6em 0;
+    padding: 16px 20px;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    line-height: 1.5;
+}
+.prose img,
+.prose video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+.prose figure {
+    margin: 2em 0;
+}
+.prose figcaption {
+    margin-top: 8px;
+    font-size: var(--text-note);
+    font-style: italic;
+    color: var(--ink-soft);
+}
+.prose hr {
+    margin: 2.5em 0;
+    border: 0;
+    border-top: 1px solid var(--rule);
+}

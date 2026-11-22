@@ -1,0 +1,80 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import Glyph from "../components/Glyph.astro";
+import { formatMonthYear, isoDate, statusLabel } from "../lib/format";
+import type { Kind } from "../types";
+
+interface Props {
+    kind: Kind;
+    title: string;
+    date: Date;
+    status?: keyof typeof statusLabel | undefined;
+    description?: string | undefined;
+}
+
+const { kind, title, date, status, description } = Astro.props;
+---
+
+<BaseLayout title={`${title} · Dimitri`} description={description}>
+    <SiteHeader />
+    <main>
+        <article>
+            <header class="article-head">
+                <p class="meta">
+                    <Glyph kind={kind} />
+                    <time datetime={isoDate(date)}>{formatMonthYear(date)}</time>
+                    {status && <span class="status">{statusLabel[status]}</span>}
+                </p>
+                <h1>{title}</h1>
+                {description && <p class="lead">{description}</p>}
+            </header>
+            <slot name="media" />
+            <div class="prose">
+                <slot />
+            </div>
+        </article>
+        <p class="back"><a href="/">← Contents</a></p>
+    </main>
+</BaseLayout>
+
+<style>
+    .meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px 14px;
+        margin: 0;
+        color: var(--ink-soft);
+    }
+    .status {
+        font-style: italic;
+    }
+    .status::before {
+        content: "·";
+        margin-right: 14px;
+        font-style: normal;
+    }
+    h1 {
+        max-width: 22ch;
+        margin: 14px 0 0;
+        font-size: var(--text-year);
+        font-weight: 400;
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+    }
+    .lead {
+        max-width: 65ch;
+        margin: 16px 0 0;
+        font-size: var(--text-lead);
+        font-style: italic;
+        line-height: 1.5;
+        color: var(--ink-soft);
+    }
+    .article-head {
+        margin-bottom: 40px;
+    }
+    .back {
+        margin: 64px 0 0;
+    }
+</style>
