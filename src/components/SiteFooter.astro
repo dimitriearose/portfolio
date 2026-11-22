@@ -1,11 +1,40 @@
 ---
+import { getWorkItems } from "../lib/content";
 import { withBase } from "../lib/url";
+
+// Every published entry's address, handed to the little script below.
+const hrefs = (await getWorkItems()).map((item) => item.href);
 ---
 
 <footer>
     <p>Set in Literata. Built with Astro.</p>
-    <a href={withBase("/rss.xml")}>Subscribe by RSS</a>
+    <p class="links">
+        <!-- Hidden until the script runs, so it never shows as a dead link. -->
+        <a class="random" href={withBase("/")} data-entries={JSON.stringify(hrefs)} hidden>
+            Open one at random
+        </a>
+        <a href={withBase("/rss.xml")}>Subscribe by RSS</a>
+    </p>
 </footer>
+
+<script>
+    // Points "Open one at random" at a random entry other than this page.
+    // Re-picks when the page is shown again via the back button.
+    const link = document.querySelector<HTMLAnchorElement>("a.random");
+    if (link) {
+        const entries: string[] = JSON.parse(link.dataset.entries ?? "[]");
+        const pick = () => {
+            const others = entries.filter((href) => href !== location.pathname);
+            const choice = others[Math.floor(Math.random() * others.length)];
+            if (choice) {
+                link.href = choice;
+                link.hidden = false;
+            }
+        };
+        pick();
+        addEventListener("pageshow", pick);
+    }
+</script>
 
 <style>
     footer {
@@ -23,7 +52,15 @@ import { withBase } from "../lib/url";
     p {
         margin: 0;
     }
+    .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 24px;
+    }
     a {
         text-underline-offset: 3px;
+    }
+    .random {
+        font-style: italic;
     }
 </style>
