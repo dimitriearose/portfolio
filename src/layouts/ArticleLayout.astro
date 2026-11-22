@@ -11,14 +11,15 @@ interface Props {
     date: Date;
     status?: keyof typeof statusLabel | undefined;
     description?: string | undefined;
+    note?: string | undefined;
 }
 
-const { kind, title, date, status, description } = Astro.props;
+const { kind, title, date, status, description, note } = Astro.props;
 ---
 
-<BaseLayout title={`${title} · Dimitri`} description={description}>
+<BaseLayout title={`${title} · Dimitri`} description={description ?? note} type="article">
     <SiteHeader />
-    <main>
+    <main id="content">
         <article>
             <header class="article-head">
                 <p class="meta">

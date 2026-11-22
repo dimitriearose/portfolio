@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+---
+
+<BaseLayout title="Not found · Dimitri" description="There's no page at this address.">
+    <SiteHeader />
+    <main id="content">
+        <p class="code" aria-hidden="true">404</p>
+        <h1>Not in the contents</h1>
+        <p class="lead">There's no page at this address. It may have moved, or the link may be mistyped.</p>
+        <p><a href="/">Back to the contents</a></p>
+    </main>
+</BaseLayout>
+
+<style>
+    .code {
+        margin: 0;
+        font-size: var(--text-year);
+        font-weight: 300;
+        line-height: 1;
+        color: var(--ink-soft);
+        font-variant-numeric: oldstyle-nums;
+    }
+    h1 {
+        margin: 12px 0 0;
+        font-size: var(--text-entry);
+        font-weight: 400;
+    }
+    .lead {
+        max-width: 50ch;
+        font-style: italic;
+        color: var(--ink-soft);
+    }
+</style>

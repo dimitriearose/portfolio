@@ -22,7 +22,7 @@ const chapters = groupByYear(await getWorkItems());
 
     <KindKey />
 
-    <main class="chapters">
+    <main id="content" class="chapters">
         {chapters.map(({ year, items }) => <Chapter year={year} items={items} />)}
     </main>
 </BaseLayout>

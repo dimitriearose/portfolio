@@ -5,13 +5,18 @@ import "../styles/global.css";
 
 interface Props {
     title: string;
-    description?: string;
+    description?: string | undefined;
+    /** "article" on entry pages, "website" everywhere else. */
+    type?: "website" | "article";
 }
 
 const {
     title,
     description = "Everything Dimitri writes, films and builds.",
+    type = "website",
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -19,11 +24,28 @@ const {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={description} />
-    <Font cssVariable="--font-literata" preload />
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content="Dimitri" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en" />
+    <meta name="twitter:card" content="summary" />
+
+    <meta name="theme-color" content="#E6E9E1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title="Dimitri" href="/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="generator" content={Astro.generator} />
+
+    <Font cssVariable="--font-literata" preload />
 </head>
 <body>
+<a class="skip-link" href="#content">Skip to content</a>
 <div class="page">
     <slot />
     <SiteFooter />
