@@ -1,0 +1,57 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import Chapter from "../components/Chapter.astro";
+import { getWorkItems, type CollectionName } from "../lib/content";
+import { groupByYear } from "../lib/work";
+
+interface Props {
+    collection: CollectionName;
+    title: string;
+    lead: string;
+}
+
+const { collection, title, lead } = Astro.props;
+const chapters = groupByYear(await getWorkItems([collection]));
+---
+
+<BaseLayout title={`${title} · Dimitri`} description={lead}>
+    <SiteHeader />
+    <main>
+        <header class="section-head">
+            <h1>{title}</h1>
+            <p class="lead">{lead}</p>
+        </header>
+        <div class="chapters">
+            {chapters.length > 0
+                ? chapters.map(({ year, items }) => <Chapter year={year} items={items} />)
+                : <p class="empty">Nothing here yet.</p>}
+        </div>
+    </main>
+</BaseLayout>
+
+<style>
+    h1 {
+        margin: 0;
+        font-size: var(--text-year);
+        font-weight: 300;
+        line-height: 1;
+    }
+    .lead {
+        margin: 14px 0 0;
+        font-size: var(--text-lead);
+        font-style: italic;
+        color: var(--ink-soft);
+    }
+    .section-head {
+        margin-bottom: 56px;
+    }
+    .chapters {
+        display: grid;
+        gap: 56px;
+    }
+    .empty {
+        color: var(--ink-soft);
+        font-style: italic;
+    }
+</style>

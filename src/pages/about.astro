@@ -1,10 +1,26 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-const name: string = "Dimitri";
+import SiteHeader from "../components/SiteHeader.astro";
 ---
 
-<BaseLayout title="Dimitri">
-    <h1>{name}</h1>
-    <p>Contents: everything I write, film and build, newest first.</p>
-    <a href="/about">About</a>
+<BaseLayout title="About · Dimitri" description="About Dimitri.">
+    <SiteHeader />
+    <main>
+        <h1>About</h1>
+        <div class="prose">
+            <p>[A short introduction: who you are and what you make.]</p>
+            <p>[Why this site exists, and what you hope to put on it.]</p>
+            <h2>Contact</h2>
+            <p>[How to reach you: an email address and any profiles you want listed.]</p>
+        </div>
+    </main>
 </BaseLayout>
+
+<style>
+    h1 {
+        margin: 0 0 40px;
+        font-size: var(--text-year);
+        font-weight: 300;
+        line-height: 1;
+    }
+</style>
