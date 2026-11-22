@@ -21,7 +21,7 @@ after each change, briefly explain what changed and why.
 - Markdown footnotes become right-margin sidenotes via a Sätteri hast plugin (`src/lib/sidenotes.ts`, registered with `markdown.processor: satteri(...)`). Astro 7 uses Sätteri, not remark/rehype: write plugins against its visitor API.
 - Motion and interaction, all small and on-concept:
   - Chapter years are `position: sticky` running heads (off below 760px).
-  - Cross-document view transitions: an entry's title glides into the article `<h1>`. Both carry `view-transition-name: titleTransitionName(href)` (`src/lib/url.ts`), so names must stay unique per page. Only enabled under `prefers-reduced-motion: no-preference`.
+  - Page transitions: a soft cross-document fade (`@view-transition` + `page-fade-out`/`page-fade-in` in `global.css`, about 200ms, nothing moves). A title "glide" was tried and removed because it blurred and stretched; don't reintroduce shared-element transitions without asking. Only under `prefers-reduced-motion: no-preference`.
   - The icon key (`KindKey.astro`) is a radio-button filter styled with `:has()`; rows carry `data-kind`.
   - The dot leader reveals a `--link` copy via `clip-path` on hover/focus.
   - Living icons (`Glyph.astro`): on hover/focus of the enclosing link or key label, writing lines draw, the film strip advances, the chip's pins flicker. Under `prefers-reduced-motion: no-preference` only.

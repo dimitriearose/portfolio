@@ -161,22 +161,28 @@ summary:focus-visible {
     }
 }
 
-/* Page-to-page animation (cross-document view transitions). Browsers without
-   support simply change page. Only enabled for people who haven't asked
-   their system to reduce motion. */
+/* Page-to-page fade: the old page fades out as the new one fades in, like
+   turning a page. Nothing moves, so nothing can blur or stretch. Browsers
+   without cross-document view transitions simply change page, and it's off
+   for anyone whose system asks to reduce motion. */
 @media (prefers-reduced-motion: no-preference) {
     @view-transition {
         navigation: auto;
     }
-    ::view-transition-group(*) {
-        animation-duration: 380ms;
-        animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+    ::view-transition-old(root) {
+        animation: 180ms ease-in both page-fade-out;
     }
-    ::view-transition-old(root),
     ::view-transition-new(root) {
-        animation-duration: 220ms;
+        animation: 260ms ease-out both page-fade-in;
     }
 }
+@keyframes page-fade-out {
+    to { opacity: 0; }
+}
+@keyframes page-fade-in {
+    from { opacity: 0; }
+}
+
 
 /* Visually hidden but read by screen readers (used by Markdown's
    "Footnotes" heading). */

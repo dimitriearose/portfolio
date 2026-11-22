@@ -4,12 +4,10 @@ import SiteHeader from "../components/SiteHeader.astro";
 import Glyph from "../components/Glyph.astro";
 import { formatMonthYear, isoDate, statusLabel } from "../lib/format";
 import type { Kind } from "../types";
-import { titleTransitionName, withBase } from "../lib/url";
+import { withBase } from "../lib/url";
 
 interface Props {
     kind: Kind;
-    /** This page's own path; links the heading to its contents row for the title animation. */
-    href: string;
     title: string;
     date: Date;
     status?: keyof typeof statusLabel | undefined;
@@ -17,7 +15,7 @@ interface Props {
     note?: string | undefined;
 }
 
-const { kind, href, title, date, status, description, note } = Astro.props;
+const { kind, title, date, status, description, note } = Astro.props;
 ---
 
 <BaseLayout title={`${title} · Dimitri`} description={description ?? note} type="article">
@@ -30,7 +28,7 @@ const { kind, href, title, date, status, description, note } = Astro.props;
                     <time datetime={isoDate(date)}>{formatMonthYear(date)}</time>
                     {status && <span class="status">{statusLabel[status]}</span>}
                 </p>
-                <h1 style={`view-transition-name: ${titleTransitionName(href)}`}>{title}</h1>
+                <h1>{title}</h1>
                 {description && <p class="lead">{description}</p>}
             </header>
             <slot name="media" />
