@@ -3,27 +3,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Chapter from "../components/Chapter.astro";
 import KindKey from "../components/KindKey.astro";
 import SiteNav from "../components/SiteNav.astro";
-import { groupByYear, sortNewestFirst } from "../lib/work";
-import type { WorkItem } from "../types";
+import { getWorkItems } from "../lib/content";
+import { groupByYear } from "../lib/work";
 
 const name: string = "Dimitri";
 
-const utc = (year: number, month: number) => new Date(Date.UTC(year, month - 1, 1));
-
-const items: WorkItem[] = [
-    { kind: "build", title: "This site, in Astro", date: utc(2026, 11), href: "/builds/this-site-in-astro/", note: "Rebuilt from scratch to relearn web development. Every step is written up." },
-    { kind: "writing", title: "[Current draft]", date: utc(2026, 10), href: "/writing/current-draft/", note: "Still in progress; it changes in place." },
-    { kind: "film", title: "[Short documentary]", date: utc(2026, 9), href: "/films/short-documentary/", note: "[Where it was shot, and why.]" },
-    { kind: "build", title: "MLX server + macOS app", date: utc(2026, 8), href: "/builds/mlx-server-macos-app/", note: "Meant to grow into an RSS and browsing hub." },
-    { kind: "writing", title: "Reading Godot’s source", date: utc(2026, 7), href: "/writing/reading-godots-source/", note: "Notes from the engine docs and its source code." },
-    { kind: "film", title: "[Bench B-roll]", date: utc(2026, 1), href: "/films/bench-b-roll/" },
-    { kind: "writing", title: "[Essay on relearning EE]", date: utc(2025, 9), href: "/writing/essay-on-relearning-ee/" },
-    { kind: "film", title: "[First short film]", date: utc(2025, 5), href: "/films/first-short-film/", note: "[Gear and crew notes.]" },
-    { kind: "build", title: "[First build log]", date: utc(2025, 3), href: "/builds/first-build-log/" },
-    { kind: "writing", title: "Notes on deep work", date: utc(2025, 2), href: "/writing/notes-on-deep-work/" },
-];
-
-const chapters = groupByYear(sortNewestFirst(items));
+const chapters = groupByYear(await getWorkItems());
 ---
 
 <BaseLayout title={name}>
