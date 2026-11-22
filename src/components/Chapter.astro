@@ -42,6 +42,11 @@ const month = (date: Date) =>
         letter-spacing: -0.01em;
         /* sit the year on the first row's baseline */
         padding-top: 4px;
+        /* Running head: the year stays in view while you scroll its chapter,
+           then the next chapter's year pushes it away (sticky stops at the
+           edge of this <section>). */
+        position: sticky;
+        top: 24px;
     }
     ol {
         list-style: none;
@@ -52,6 +57,10 @@ const month = (date: Date) =>
         .chapter {
             grid-template-columns: 1fr;
             row-gap: 8px;
+        }
+        /* One column on phones: a pinned year would sit on top of the rows. */
+        h2 {
+            position: static;
         }
     }
 </style>
