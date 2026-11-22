@@ -9,11 +9,25 @@ const kinds: { kind: Kind; label: string }[] = [
 ];
 ---
 
-<ul class="key" aria-label="Key to icons">
+<!--
+    The key to the icons doubles as a filter, with no JavaScript: each item
+    is a radio button, and CSS :has() fades the rows that don't match the
+    checked one. "Show all" only appears while a filter is on.
+-->
+<fieldset class="key">
+    <legend class="visually-hidden">Highlight one kind of work</legend>
     {kinds.map(({ kind, label }) => (
-        <li><Glyph kind={kind} decorative />{label}</li>
+        <label>
+            <input class="visually-hidden" type="radio" name="kind" value={kind} />
+            <Glyph kind={kind} decorative />
+            {label}
+        </label>
     ))}
-</ul>
+    <label class="all">
+        <input class="visually-hidden" type="radio" name="kind" value="all" checked />
+        Show all
+    </label>
+</fieldset>
 
 <style>
     .key {
@@ -22,13 +36,62 @@ const kinds: { kind: Kind; label: string }[] = [
         gap: 8px 30px;
         margin: 0;
         padding: 0 0 18px;
-        list-style: none;
+        border: 0;
         border-bottom: 1px solid var(--rule);
         color: var(--ink-soft);
     }
-    li {
+    label {
         display: flex;
         align-items: center;
         gap: 10px;
+        cursor: pointer;
+        text-underline-offset: 6px;
+    }
+    label:hover {
+        color: var(--ink);
+    }
+    label:has(input:checked) {
+        color: var(--ink);
+        text-decoration: underline 1px;
+    }
+    label:has(input:focus-visible) {
+        outline: 2px solid var(--link);
+        outline-offset: 4px;
+        border-radius: 2px;
+    }
+    /* "Show all" sits at the end, hidden until a kind is chosen. */
+    .all {
+        margin-left: auto;
+        font-style: italic;
+        text-decoration: none !important;
+        visibility: hidden;
+    }
+    .key:has(input:checked:not([value="all"])) .all {
+        visibility: visible;
+    }
+    .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+        opacity: 0;
+    }
+</style>
+
+<style is:global>
+    /* Fade rows (and whole years) that don't match the chosen kind. */
+    .entry,
+    .chapter h2 {
+        transition: opacity 0.25s ease;
+    }
+    body:has(.key input[value="writing"]:checked) .entry:not([data-kind="writing"]),
+    body:has(.key input[value="writing"]:checked) .chapter:not(:has([data-kind="writing"])) h2,
+    body:has(.key input[value="film"]:checked) .entry:not([data-kind="film"]),
+    body:has(.key input[value="film"]:checked) .chapter:not(:has([data-kind="film"])) h2,
+    body:has(.key input[value="build"]:checked) .entry:not([data-kind="build"]),
+    body:has(.key input[value="build"]:checked) .chapter:not(:has([data-kind="build"])) h2 {
+        opacity: 0.2;
     }
 </style>

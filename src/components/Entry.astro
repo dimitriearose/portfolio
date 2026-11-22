@@ -14,7 +14,7 @@ interface Props {
 const { kind, title, month, href, note } = Astro.props;
 ---
 
-<li class="entry">
+<li class="entry" data-kind={kind}>
     <a href={href}>
         <Glyph kind={kind} />
         <span class="title" style={`view-transition-name: ${titleTransitionName(href)}`}>{title}</span>
