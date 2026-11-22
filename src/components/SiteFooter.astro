@@ -1,6 +1,10 @@
+---
+import { withBase } from "../lib/url";
+---
+
 <footer>
     <p>Set in Literata. Built with Astro.</p>
-    <a href="/rss.xml">Subscribe by RSS</a>
+    <a href={withBase("/rss.xml")}>Subscribe by RSS</a>
 </footer>
 
 <style>

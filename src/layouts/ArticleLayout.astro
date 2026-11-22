@@ -4,6 +4,7 @@ import SiteHeader from "../components/SiteHeader.astro";
 import Glyph from "../components/Glyph.astro";
 import { formatMonthYear, isoDate, statusLabel } from "../lib/format";
 import type { Kind } from "../types";
+import { withBase } from "../lib/url";
 
 interface Props {
     kind: Kind;
@@ -35,7 +36,7 @@ const { kind, title, date, status, description, note } = Astro.props;
                 <slot />
             </div>
         </article>
-        <p class="back"><a href="/">← Contents</a></p>
+        <p class="back"><a href={withBase("/")}>← Contents</a></p>
     </main>
 </BaseLayout>
 

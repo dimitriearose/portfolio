@@ -1,9 +1,10 @@
 ---
 import SiteNav from "./SiteNav.astro";
+import { withBase } from "../lib/url";
 ---
 
 <header class="site-header">
-    <a class="name" href="/">Dimitri</a>
+    <a class="name" href={withBase("/")}>Dimitri</a>
     <SiteNav />
 </header>
 

@@ -1,6 +1,7 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import type { Kind, WorkItem } from "../types";
 import { sortNewestFirst } from "./work";
+import { withBase } from "./url";
 
 export type CollectionName = "writing" | "films" | "builds";
 export type AnyEntry = CollectionEntry<CollectionName>;
@@ -27,7 +28,7 @@ export async function getPublished<C extends CollectionName>(
 
 /** An entry's page, e.g. /films/first-short-film/. */
 export function entryPath(entry: AnyEntry): string {
-    return `/${entry.collection}/${entry.id}/`;
+    return withBase(`/${entry.collection}/${entry.id}/`);
 }
 
 export function toWorkItem(entry: AnyEntry): WorkItem {

@@ -1,6 +1,7 @@
 import rss from "@astrojs/rss";
 import type { APIContext } from "astro";
 import { getPublished, entryPath, type AnyEntry } from "../lib/content";
+import { withBase } from "../lib/url";
 
 export async function GET(context: APIContext) {
     const lists = await Promise.all([
@@ -15,7 +16,8 @@ export async function GET(context: APIContext) {
     return rss({
         title: "Dimitri",
         description: "Everything Dimitri writes, films and builds.",
-        site: context.site ?? "https://example.com",
+        // The feed's home link, including the base path (e.g. /portfolio/).
+        site: new URL(withBase("/"), context.site),
         items: entries.map((entry) => ({
             title: entry.data.title,
             pubDate: entry.data.date,

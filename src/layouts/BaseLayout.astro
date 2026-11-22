@@ -1,6 +1,7 @@
 ---
 import { Font } from "astro:assets";
 import SiteFooter from "../components/SiteFooter.astro";
+import { withBase } from "../lib/url";
 import "../styles/global.css";
 
 interface Props {
@@ -37,9 +38,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="twitter:card" content="summary" />
 
     <meta name="theme-color" content="#E6E9E1" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="alternate" type="application/rss+xml" title="Dimitri" href="/rss.xml" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" href={withBase("/favicon.svg")} type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title="Dimitri" href={withBase("/rss.xml")} />
+    <link rel="sitemap" href={withBase("/sitemap-index.xml")} />
     <meta name="generator" content={Astro.generator} />
 
     <Font cssVariable="--font-literata" preload />

@@ -1,9 +1,11 @@
 ---
+import { withBase } from "../lib/url";
+
 const links = [
-    { href: "/writing/", label: "Writing" },
-    { href: "/films/", label: "Films" },
-    { href: "/builds/", label: "Builds" },
-    { href: "/about/", label: "About" },
+    { href: withBase("/writing/"), label: "Writing" },
+    { href: withBase("/films/"), label: "Films" },
+    { href: withBase("/builds/"), label: "Builds" },
+    { href: withBase("/about/"), label: "About" },
 ];
 const path = Astro.url.pathname;
 ---

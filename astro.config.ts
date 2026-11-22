@@ -2,10 +2,15 @@ import { defineConfig, fontProviders } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-    // ─── PLACEHOLDER ──────────────────────────────────────────────────────
-    // The site's public address. Used for canonical links, Open Graph tags,
-    // the RSS feed and the sitemap. Replace before deploying.
-    site: "https://example.com",
+    // ─── WHERE THE SITE LIVES ─────────────────────────────────────────────
+    // GitHub Pages project site: https://<username>.github.io/<repo>/
+    // ⚠ PLACEHOLDER: change "dimitriearose" to your GitHub username and
+    //   "/portfolio" to your repository name if they differ.
+    //
+    // Moving to a custom domain later? Set site to "https://your-domain.com",
+    // delete the base line, and add public/CNAME (see DEPLOY.md).
+    site: "https://dimitriearose.github.io",
+    base: "/portfolio",
     // ──────────────────────────────────────────────────────────────────────
 
     integrations: [sitemap()],
