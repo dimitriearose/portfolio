@@ -33,3 +33,10 @@ a:hover { color: var(--link-hover); }
     outline: 2px solid var(--link);
     outline-offset: 3px;
 }
+
+/* page frame shared by every page */
+.page {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 56px 40px 64px;
+}

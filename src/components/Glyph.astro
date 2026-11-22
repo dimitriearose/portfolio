@@ -3,9 +3,11 @@ import type { Kind } from "../types";
 
 interface Props {
     kind: Kind;
+    /** Set when a visible text label sits next to the icon. */
+    decorative?: boolean;
 }
 
-const { kind } = Astro.props;
+const { kind, decorative = false } = Astro.props;
 
 const labels: Record<Kind, string> = {
     writing: "Writing",
@@ -22,8 +24,9 @@ const labels: Record<Kind, string> = {
         fill="none"
         stroke="currentColor"
         stroke-width="1.6"
-        role="img"
-        aria-label={labels[kind]}
+        role={decorative ? undefined : "img"}
+        aria-label={decorative ? undefined : labels[kind]}
+        aria-hidden={decorative ? "true" : undefined}
 >
     {kind === "writing" && <path d="M3 5h14M3 10h14M3 15h9" />}
     {kind === "film" && (

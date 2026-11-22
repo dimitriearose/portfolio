@@ -1,5 +1,6 @@
 ---
 import { Font } from "astro:assets";
+import SiteFooter from "../components/SiteFooter.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -23,6 +24,9 @@ const {
     <title>{title}</title>
 </head>
 <body>
-<slot />
+<div class="page">
+    <slot />
+    <SiteFooter />
+</div>
 </body>
 </html>
