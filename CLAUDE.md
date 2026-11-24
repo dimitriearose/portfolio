@@ -15,6 +15,7 @@ after each change, briefly explain what changed and why.
 - **Ask before changing the design.**
 - Plain CSS only, using the tokens in `src/styles/global.css` (`--paper`, `--ink`, `--ink-soft`, `--rule`, `--leader`, `--link`, `--link-hover`, `--rubric`, `--ink-writing`, `--ink-film`, `--ink-build`; `--text-note` … `--text-name`).
 - Colour is used sparingly: `--rubric` (red ink) only for chapter years, footnote/sidenote numbers, article drop caps and the 404 number; each kind's ink only on its icon and the active filter underline; links stay `--link` blue. All colours pass 4.5:1 on `--paper`. The paper has a faint inline-SVG grain (`body` background-image). No Tailwind, no UI frameworks, no client-side JS unless truly needed.
+- Article pages (`ArticleLayout`) use the contents grid: left margin `11rem` (icon, date, status; same as the year column), text column capped at `--measure: 34rem` (~68 characters of Literata; `ch` is misleading for this font), 40px gap, right margin `13.5rem` for sidenotes. Below 1100px the right margin drops; below 760px it's one column. `.prose` elsewhere also uses `34rem`.
 - Component styles in the component's scoped `<style>`. Markdown output is unscoped, so article body styles live under `.prose` in `global.css`.
 - Font: Literata via Astro's Fonts API (`astro.config.ts`, `--font-literata`).
 - Code blocks are plain (`markdown.syntaxHighlight: false`).

@@ -54,7 +54,7 @@ a:hover { color: var(--link-hover); }
 /* Long-form text on article pages. Markdown output isn't scoped to a
    component, so these styles live here. */
 .prose {
-    max-width: 65ch;
+    max-width: 34rem; /* about 68 characters of Literata a line */
     line-height: 1.7;
 }
 .prose > :first-child { margin-top: 0; }
@@ -227,7 +227,7 @@ summary:focus-visible {
         float: right;
         clear: right;
         width: 13.5rem;
-        margin: 0.35em calc(-13.5rem - 48px) 1em 0;
+        margin: 0.35em calc(-13.5rem - 40px) 1em 0;
         font-size: var(--text-note);
         font-style: italic;
         line-height: 1.5;
