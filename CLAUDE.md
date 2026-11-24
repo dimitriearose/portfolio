@@ -15,7 +15,7 @@ after each change, briefly explain what changed and why.
 - **Ask before changing the design.**
 - Plain CSS only, using the tokens in `src/styles/global.css` (`--paper`, `--ink`, `--ink-soft`, `--rule`, `--leader`, `--link`, `--link-hover`, `--rubric`, `--ink-writing`, `--ink-film`, `--ink-build`; `--text-note` … `--text-name`).
 - Colour is used sparingly: `--rubric` (red ink) only for chapter years, footnote/sidenote numbers, article drop caps and the 404 number; each kind's ink only on its icon and the active filter underline; links stay `--link` blue. All colours pass 4.5:1 on `--paper`. The paper has a faint inline-SVG grain (`body` background-image). No Tailwind, no UI frameworks, no client-side JS unless truly needed.
-- Article pages (`ArticleLayout`) use the contents grid: left margin `11rem` (icon, date, status; same as the year column), text column capped at `--measure: 34rem` (~68 characters of Literata; `ch` is misleading for this font), 40px gap, right margin `13.5rem` for sidenotes. Below 1100px the right margin drops; below 760px it's one column. `.prose` elsewhere also uses `34rem`.
+- `PageLayout` holds the page grid shared by articles and About: left margin `11rem` (8rem below 1100px; same as the year column), text column `--measure: 34rem` (~68 characters of Literata; `ch` is misleading for this font), 40px gap, right margin `13.5rem` for sidenotes. The left margin (slot `margin`) spans all rows and is sticky; it never pushes the text down. Below 1100px the right margin drops; below 760px it's one column. `ArticleLayout` fills the margin with the kind (icon + section name, linking to the section), date and status; About fills it with per-kind counts and a "Since" date computed from content. `.prose` elsewhere also uses `34rem`.
 - Component styles in the component's scoped `<style>`. Markdown output is unscoped, so article body styles live under `.prose` in `global.css`.
 - Font: Literata via Astro's Fonts API (`astro.config.ts`, `--font-literata`).
 - Code blocks are plain (`markdown.syntaxHighlight: false`).
@@ -42,7 +42,7 @@ after each change, briefly explain what changed and why.
 - Semantic, accessible HTML: real links/buttons, alt text, `aria-hidden` on decorative elements (e.g. `<Glyph decorative />` next to a visible label), visible focus styles, skip link, reduced-motion guard.
 
 ## Layout of the code
-- `src/layouts/`: `BaseLayout` (head/meta/OG, footer), `ArticleLayout` (detail pages), `SectionLayout` (/writing, /films, /builds).
+- `src/layouts/`: `BaseLayout` (head/meta/OG, footer), `PageLayout` (margin/text/sidenote grid), `ArticleLayout` (detail pages, on PageLayout), `SectionLayout` (/writing, /films, /builds).
 - `src/pages/`: `index.astro`, `{writing,films,builds}/index.astro` + `[slug].astro`, `about.astro`, `404.astro`, `rss.xml.ts`.
 - `src/components/`: `Chapter`, `Entry`, `Glyph`, `KindKey`, `SiteHeader`, `SiteNav`, `SiteFooter`.
 

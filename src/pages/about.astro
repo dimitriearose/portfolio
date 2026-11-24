@@ -1,6 +1,10 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import SiteHeader from "../components/SiteHeader.astro";
+import PageLayout from "../layouts/PageLayout.astro";
+import Glyph from "../components/Glyph.astro";
+import { collectionFor, getWorkItems, sectionLabel } from "../lib/content";
+import { formatMonthYear } from "../lib/format";
+import { withBase } from "../lib/url";
+import type { Kind } from "../types";
 
 // ─── Your contact details: edit these ──────────────────────────────────
 // Replace each placeholder with the real address or handle. To hide one,
@@ -9,34 +13,139 @@ const email = "you@example.com";
 const profiles = [
     { label: "GitHub", href: "https://github.com/your-username", handle: "your-username" },
     { label: "YouTube", href: "https://www.youtube.com/@your-channel", handle: "@your-channel" },
-    { label: "LinkedIn", href: "https://www.youtube.com/@your-channel", handle: "@your-channel" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/your-name", handle: "your-name" },
 ];
 // ───────────────────────────────────────────────────────────────────────
+
+// "On this site", counted from your published work so it stays current.
+const items = await getWorkItems();
+const kinds: Kind[] = ["writing", "film", "build"];
+const counts = kinds.map((kind) => ({
+    kind,
+    count: items.filter((item) => item.kind === kind).length,
+}));
+const firstDate = items.at(-1)?.date;
 ---
 
-<BaseLayout title="About · Dimitri" description="About Dimitri.">
-    <SiteHeader />
-    <main id="content">
-        <h1>About</h1>
-        <div class="prose">
-            <p>I'm Dimitri Rose. I am here to grow and share my work along the way</p>
-            <p>This site is my space away from the chaos on the internet. I am here to show my work the way I truly want to.</p>
-            <h2>Contact</h2>
-            <ul class="contact">
-                <li>Email <a href={`mailto:${email}`}>{email}</a></li>
-                {profiles.map(({ label, href, handle }) => (
-                    <li>{label} <a href={href} rel="me">{handle}</a></li>
-                ))}
-            </ul>
-        </div>
-    </main>
-</BaseLayout>
+<PageLayout
+    title="About · Dimitri"
+    heading="About"
+    description="About Dimitri, and how to get in touch."
+    dropCap={false}
+    backLink={false}
+>
+    <Fragment slot="margin">
+        <p class="margin-label">On this site</p>
+        <ul class="counts">
+            {counts.map(({ kind, count }) => (
+                <li>
+                    <a href={withBase(`/${collectionFor[kind]}/`)}>
+                        <Glyph kind={kind} decorative />
+                        {sectionLabel[kind]}
+                        <span class="count">{count}</span>
+                    </a>
+                </li>
+            ))}
+        </ul>
+        {firstDate && <p class="since">Since {formatMonthYear(firstDate)}</p>}
+    </Fragment>
+
+    <p>I'm Dimitri</p>
+    <p>I am here to grow and share my work along the way</p>
+
+    <h2>Contact</h2>
+    <!-- Laid out like a line on the contents page: label, dotted leader, link. -->
+    <ul class="contact">
+        <li>
+            <span class="label">Email</span>
+            <span class="leader" aria-hidden="true"></span>
+            <a href={`mailto:${email}`}>{email}</a>
+        </li>
+        {profiles.map(({ label, href, handle }) => (
+            <li>
+                <span class="label">{label}</span>
+                <span class="leader" aria-hidden="true"></span>
+                <a href={href} rel="me">{handle}</a>
+            </li>
+        ))}
+    </ul>
+</PageLayout>
 
 <style>
-    h1 {
-        margin: 0 0 40px;
-        font-size: var(--text-year);
-        font-weight: 300;
-        line-height: 1;
+    /* Left margin: what's on the site, each kind linking to its section. */
+    .margin-label {
+        margin: 0 0 6px;
+        font-style: italic;
+    }
+    .counts {
+        display: grid;
+        gap: 4px;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .counts a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--ink-soft);
+        text-decoration: none;
+    }
+    .counts a:hover,
+    .counts a:focus-visible {
+        color: var(--link);
+    }
+    .count {
+        margin-left: auto;
+        font-variant-numeric: oldstyle-nums;
+    }
+    .since {
+        margin: 10px 0 0;
+        font-style: italic;
+    }
+
+    /* Contact lines: label ······ link, like the contents page. */
+    .contact {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .contact li {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+        margin: 0;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--rule);
+    }
+    .label {
+        color: var(--ink-soft);
+    }
+    .leader {
+        flex: 1 1 24px;
+        border-bottom: 2px dotted var(--leader);
+        transform: translateY(-5px);
+    }
+    .contact a {
+        overflow-wrap: anywhere;
+        text-align: right;
+        text-underline-offset: 3px;
+    }
+
+    @media (max-width: 760px) {
+        .margin-label,
+        .since {
+            margin: 0;
+        }
+        .counts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 14px;
+            width: auto;
+        }
+        .count {
+            margin-left: 0;
+        }
     }
 </style>

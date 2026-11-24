@@ -12,6 +12,12 @@ export const collectionFor: Record<Kind, CollectionName> = {
     film: "films",
     build: "builds",
 };
+/** The name each section goes by in the navigation. */
+export const sectionLabel: Record<Kind, string> = {
+    writing: "Writing",
+    film: "Films",
+    build: "Builds",
+};
 export const kindOf: Record<CollectionName, Kind> = {
     writing: "writing",
     films: "film",

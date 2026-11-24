@@ -243,8 +243,9 @@ summary:focus-visible {
     }
 }
 
-/* A red drop cap opens every article, like a rubricated initial. */
-article .prose > p:first-child::first-letter {
+/* A red drop cap opens every article, like a rubricated initial.
+   (PageLayout sets data-drop-cap; the About page turns it off.) */
+article[data-drop-cap] .prose > p:first-child::first-letter {
     float: left;
     margin: 0.06em 0.1em 0 0;
     font-size: 3.5em;

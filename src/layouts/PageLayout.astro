@@ -1,0 +1,176 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import { withBase } from "../lib/url";
+
+interface Props {
+    /** The browser tab title. */
+    title: string;
+    /** The big heading at the top of the text column. */
+    heading: string;
+    /** Italic line under the heading, also used as the meta description. */
+    lead?: string | undefined;
+    description?: string | undefined;
+    type?: "website" | "article";
+    /** Open the first paragraph with a red drop cap. */
+    dropCap?: boolean;
+    /** Show "← Contents" under the text. */
+    backLink?: boolean;
+}
+
+const {
+    title,
+    heading,
+    lead,
+    description,
+    type = "website",
+    dropCap = true,
+    backLink = true,
+} = Astro.props;
+---
+
+<!--
+    A page laid out like the contents page, so it reads like a printed page
+    with margins on both sides:
+
+      left margin    | text                      | gap | right margin
+      (slot "margin")| heading, lead, body       |     | sidenotes
+
+    The left margin is as wide as the contents page's year column, so the
+    text lines up with the entry titles there; the right margin matches the
+    margin-note column. The text column is capped at a comfortable measure
+    (about 68 characters of Literata a line). Narrower screens tighten the
+    left margin and drop the right one; phones get a single column.
+-->
+<BaseLayout title={title} description={description ?? lead} type={type}>
+    <SiteHeader />
+    <main id="content">
+        <article class="page-grid" data-drop-cap={dropCap ? "" : undefined}>
+            <div class="margin">
+                <slot name="margin" />
+            </div>
+            <header class="page-head">
+                <h1>{heading}</h1>
+                {lead && <p class="lead">{lead}</p>}
+            </header>
+            <div class="media">
+                <slot name="media" />
+            </div>
+            <div class="prose">
+                <slot />
+            </div>
+        </article>
+        {backLink && <p class="back"><a href={withBase("/")}>← Contents</a></p>}
+    </main>
+</BaseLayout>
+
+<style>
+    main {
+        --left-margin: 11rem;
+        --measure: 34rem;
+        --gap: 40px;
+        --right-margin: 13.5rem;
+    }
+
+    .page-grid {
+        display: grid;
+        grid-template-columns: var(--left-margin) minmax(0, var(--measure)) var(--gap) var(--right-margin);
+        justify-content: start;
+    }
+    /* Rows: heading, media, text. The left margin runs alongside all three,
+       so however much it holds, it never pushes the text down. */
+    .page-head {
+        grid-column: 2 / -1;
+        grid-row: 1;
+        margin-bottom: 40px;
+    }
+    .media {
+        grid-column: 2 / -1;
+        grid-row: 2;
+    }
+    .prose {
+        grid-column: 2;
+        grid-row: 3;
+    }
+    .lead {
+        max-width: var(--measure);
+    }
+    .prose {
+        /* The text column already sets the measure. */
+        max-width: none;
+    }
+
+    /* Left margin: small, quiet text stacked like a running head. */
+    .margin {
+        grid-column: 1;
+        grid-row: 1 / span 3;
+        align-self: start;
+        /* Stays in view while you read, like the contents page's years. */
+        position: sticky;
+        top: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 0.9rem 24px 0 0;
+        font-size: var(--text-note);
+        line-height: 1.4;
+        color: var(--ink-soft);
+    }
+
+    h1 {
+        max-width: 18ch;
+        margin: 0;
+        font-size: var(--text-year);
+        font-weight: 400;
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+    }
+    .lead {
+        margin: 16px 0 0;
+        font-size: var(--text-lead);
+        font-style: italic;
+        line-height: 1.5;
+        color: var(--ink-soft);
+    }
+    .back {
+        margin: 64px 0 0 var(--left-margin);
+    }
+
+    /* No room for sidenotes (they become a list at the end): drop the right
+       margin, and tighten the left one so it doesn't look like a hole. */
+    @media (max-width: 1099px) {
+        main {
+            --left-margin: 8rem;
+        }
+        .page-grid {
+            grid-template-columns: var(--left-margin) minmax(0, var(--measure));
+        }
+    }
+
+    /* Phones: one column, with the margin's contents in a line above the heading. */
+    @media (max-width: 760px) {
+        .page-grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+        .margin,
+        .page-head,
+        .media,
+        .prose {
+            grid-column: 1;
+            grid-row: auto;
+        }
+        .margin {
+            position: static;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px 14px;
+            padding: 0 0 12px;
+            font-size: var(--text-base);
+        }
+        .back {
+            margin-left: 0;
+        }
+    }
+</style>

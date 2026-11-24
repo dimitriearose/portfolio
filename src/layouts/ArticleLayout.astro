@@ -1,10 +1,10 @@
 ---
-import BaseLayout from "./BaseLayout.astro";
-import SiteHeader from "../components/SiteHeader.astro";
+import PageLayout from "./PageLayout.astro";
 import Glyph from "../components/Glyph.astro";
+import { collectionFor, sectionLabel } from "../lib/content";
 import { formatMonthYear, isoDate, statusLabel } from "../lib/format";
-import type { Kind } from "../types";
 import { withBase } from "../lib/url";
+import type { Kind } from "../types";
 
 interface Props {
     kind: Kind;
@@ -18,160 +18,54 @@ interface Props {
 const { kind, title, date, status, description, note } = Astro.props;
 ---
 
-<!--
-    The article sits on the same grid as the contents page, like a printed
-    page with margins on both sides:
-
-      left margin    | text                      | gap | right margin
-      icon, date,    | title, lead, body         |     | sidenotes
-      status         |                           |     |
-
-    The left column is as wide as the contents page's year column, so the
-    text lines up with the entry titles there. The right column matches the
-    margin-note column. Narrower screens drop the right margin, then the left.
--->
-<BaseLayout title={`${title} · Dimitri`} description={description ?? note} type="article">
-    <SiteHeader />
-    <main id="content">
-        <article class="article">
-            <header class="article-head">
-                <p class="meta">
-                    <Glyph kind={kind} />
-                    <time datetime={isoDate(date)}>{formatMonthYear(date)}</time>
-                    {status && <span class="status">{statusLabel[status]}</span>}
-                </p>
-                <h1>{title}</h1>
-                {description && <p class="lead">{description}</p>}
-            </header>
-            <div class="media">
-                <slot name="media" />
-            </div>
-            <div class="prose">
-                <slot />
-            </div>
-        </article>
-        <p class="back"><a href={withBase("/")}>← Contents</a></p>
-    </main>
-</BaseLayout>
+<!-- An essay, film or build page: the shared page grid, with its kind,
+     date and status in the left margin. -->
+<PageLayout
+    title={`${title} · Dimitri`}
+    heading={title}
+    lead={description}
+    description={description ?? note}
+    type="article"
+>
+    <Fragment slot="margin">
+        <!-- The icon and label link back to the section, e.g. all films. -->
+        <a class="kind" href={withBase(`/${collectionFor[kind]}/`)}>
+            <Glyph kind={kind} decorative />
+            {sectionLabel[kind]}
+        </a>
+        <time datetime={isoDate(date)}>{formatMonthYear(date)}</time>
+        {status && <span class="status">{statusLabel[status]}</span>}
+    </Fragment>
+    <slot name="media" slot="media" />
+    <slot />
+</PageLayout>
 
 <style>
-    /* Column widths. The left margin matches the contents page's year column
-       and the right margin its note column. The text column is capped at a
-       comfortable reading measure (about 68 characters of Literata a line);
-       any spare width goes to the far right, so sidenotes stay close to
-       their text. */
-    main {
-        --left-margin: 11rem;
-        --measure: 34rem;
-        --gap: 40px;
-        --right-margin: 13.5rem;
-    }
-
-    .article {
-        display: grid;
-        grid-template-columns: var(--left-margin) minmax(0, var(--measure)) var(--gap) var(--right-margin);
-        justify-content: start;
-    }
-    /* The header uses the same columns (subgrid) so its parts can sit in them. */
-    .article-head {
-        grid-column: 1 / -1;
-        display: grid;
-        grid-template-columns: subgrid;
-        align-items: start;
-        margin-bottom: 40px;
-    }
-    .media,
-    h1 {
-        grid-column: 2 / -1;
-    }
-    .lead,
-    .prose {
-        grid-column: 2;
-    }
-    .prose {
-        /* Fill the text column, which already sets the measure. */
-        max-width: none;
-    }
-
-    /* Left margin: icon, date and status, stacked like a running head. */
-    .meta {
-        grid-column: 1;
-        grid-row: 1 / span 2;
+    .kind {
         display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 4px;
-        margin: 0;
-        padding: 0.9rem 24px 0 0;
-        font-size: var(--text-note);
-        line-height: 1.4;
-        color: var(--ink-soft);
-    }
-    .meta :global(.glyph) {
-        align-self: flex-start;
+        align-items: center;
+        gap: 8px;
         margin-bottom: 6px;
+        color: var(--ink-soft);
+        text-decoration: none;
+    }
+    .kind:hover,
+    .kind:focus-visible {
+        color: var(--link);
+        text-decoration: underline;
+        text-underline-offset: 3px;
     }
     .status {
         font-style: italic;
     }
-
-    h1 {
-        max-width: 18ch;
-        margin: 0;
-        font-size: var(--text-year);
-        font-weight: 400;
-        line-height: 1.1;
-        letter-spacing: -0.01em;
-    }
-    .lead {
-        margin: 16px 0 0;
-        font-size: var(--text-lead);
-        font-style: italic;
-        line-height: 1.5;
-        color: var(--ink-soft);
-    }
-    .back {
-        margin: 64px 0 0 var(--left-margin);
-    }
-
-    /* Below 1100px there's no room for sidenotes (they move to the end as a
-       numbered list), so drop the right margin. Keep the text to a
-       comfortable line length. */
-    @media (max-width: 1099px) {
-        .article {
-            grid-template-columns: var(--left-margin) minmax(0, var(--measure));
-        }
-    }
-
-    /* Phones: one column, with the date line back above the title. */
     @media (max-width: 760px) {
-        .article {
-            grid-template-columns: minmax(0, 1fr);
-        }
-        .article-head > *,
-        .media,
-        .prose {
-            grid-column: 1;
-            grid-row: auto;
-        }
-        .meta {
-            flex-direction: row;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 6px 12px;
-            padding: 0 0 12px;
-            font-size: var(--text-base);
-        }
-        .meta :global(.glyph) {
+        .kind {
             margin-bottom: 0;
         }
         .status::before {
             content: "·";
-            margin-right: 12px;
+            margin-right: 14px;
             font-style: normal;
-        }
-        .back {
-            margin-left: 0;
         }
     }
 </style>
